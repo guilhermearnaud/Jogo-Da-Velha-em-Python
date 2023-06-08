@@ -1,0 +1,68 @@
+# Função para mostrar o tabuleiro
+def mostrar_tabuleiro(tabuleiro):
+    for linha in tabuleiro:
+        print("|".join(linha))
+        print("-" * 9)
+
+# Função para conferir se alguém ganhou
+def conferir_vitoria(tabuleiro, jogador):
+    # Verificar linhas
+    for linha in tabuleiro:
+        if linha.count(jogador) == 3:
+            return True
+
+    # Conferir colunas
+    for coluna in range(3):
+        if tabuleiro[0][coluna] == jogador and tabuleiro[1][coluna] == jogador and tabuleiro[2][coluna] == jogador:
+            return True
+
+    # Conferir diagonais
+    if tabuleiro[0][0] == jogador and tabuleiro[1][1] == jogador and tabuleiro[2][2] == jogador:
+        return True
+    if tabuleiro[0][2] == jogador and tabuleiro[1][1] == jogador and tabuleiro[2][0] == jogador:
+        return True
+
+    return False
+
+# Função para realizar uma jogada
+def fazer_jogada(tabuleiro, jogador, linha, coluna):
+    if tabuleiro[linha][coluna] == " ":
+        tabuleiro[linha][coluna] = jogador
+        return True
+    else:
+        return False
+
+# Função para conferir se o tabuleiro está cheio
+def conferir_empate(tabuleiro):
+    for linha in tabuleiro:
+        if " " in linha:
+            return False
+    return True
+
+# Função principal do jogo
+def iniciar_jogo_da_velha():
+    tabuleiro = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
+    jogador_atual = "X"
+
+    while True:
+        mostrar_tabuleiro(tabuleiro)
+
+        linha = int(input("Jogador " + jogador_atual + ", digite o número da linha (0, 1 ou 2): "))
+        coluna = int(input("Jogador " + jogador_atual + ", digite o número da coluna (0, 1 ou 2): "))
+
+        if fazer_jogada(tabuleiro, jogador_atual, linha, coluna):
+            if conferir_vitoria(tabuleiro, jogador_atual):
+                mostrar_tabuleiro(tabuleiro)
+                print("Jogador", jogador_atual, "venceu!")
+                break
+            elif conferir_empate(tabuleiro):
+                mostrar_tabuleiro(tabuleiro)
+                print("Empate!")
+                break
+            else:
+                jogador_atual = "O" if jogador_atual == "X" else "X"
+        else:
+            print("Posição inválida. Tente novamente.")
+
+# Executar o jogo
+iniciar_jogo_da_velha()
